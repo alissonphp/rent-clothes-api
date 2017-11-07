@@ -7,7 +7,6 @@
 return [
     'modules' => [
         'OAuth',
-        'Projects',
         'Users'
     ]
 ];
