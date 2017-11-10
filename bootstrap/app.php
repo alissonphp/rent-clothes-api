@@ -32,11 +32,14 @@ $app->singleton(
 );
 
 $app->configure('services');
+$app->configure('cors');
 $app->configure('jwt');
 $app->configure('auth');
 $app->configure('modules');
 
-
+ $app->middleware([
+    \Barryvdh\Cors\HandleCors::class,
+ ]);
 
  $app->routeMiddleware([
      'jwt-auth' => Tymon\JWTAuth\Http\Middleware\Authenticate::class

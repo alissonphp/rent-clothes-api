@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(RedisServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(CommandsServiceProvider::class);
+        $this->app->register(\Barryvdh\Cors\ServiceProvider::class);
     }
 }
