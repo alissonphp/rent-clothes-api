@@ -10,8 +10,8 @@ return [
     | to accept any value.
     |
     */
-    'supportsCredentials' => false,
-    'allowedOrigins' => ['*'],
+    'supportsCredentials' => true,
+    'allowedOrigins' => [''],
     'allowedHeaders' => ['Content-Type', 'X-Requested-With'],
     'allowedMethods' => ['*'], // ex: ['GET', 'POST', 'PUT',  'DELETE']
     'exposedHeaders' => [],
