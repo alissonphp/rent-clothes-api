@@ -9,6 +9,7 @@ $app->group(['middleware' => 'jwt-auth'], function($app)
         $app->get('{id}', 'ItemController@show');
         $app->put('{id}', 'ItemController@update');
         $app->delete('{id}', 'ItemController@delete');
+        $app->post('images/upload/{id}', 'ItemController@imageUpload');
 
     });
 

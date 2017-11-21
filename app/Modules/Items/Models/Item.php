@@ -8,6 +8,13 @@ class Item extends Model
 {
 
     protected $table = 'items';
+    protected $fillable = ['label','price','short_description','description','active', 'price_unit'];
+    public $timestamps = false;
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'categorys_id');
+    }
 
     public function sizes()
     {
