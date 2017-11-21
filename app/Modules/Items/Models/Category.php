@@ -8,6 +8,8 @@ class Category extends Model
 {
 
     protected $table = 'categories';
+    protected $fillable = ['label'];
+    public $timestamps = false;
 
     public function subcategories()
     {
