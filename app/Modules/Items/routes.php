@@ -2,9 +2,23 @@
 
 $app->group(['middleware' => 'jwt-auth'], function($app)
 {
-    $app->get('category', 'CategoryController@index');
-    $app->post('category', 'CategoryController@store');
-    $app->get('category/{id}', 'CategoryController@show');
-    $app->put('category/{id}', 'CategoryController@update');
-    $app->delete('category/{id}', 'CategoryController@delete');
+    $app->group(['prefix' => 'item'], function($app){
+
+        $app->get('', 'ItemController@index');
+        $app->post('', 'ItemController@store');
+        $app->get('{id}', 'ItemController@show');
+        $app->put('{id}', 'ItemController@update');
+        $app->delete('{id}', 'ItemController@delete');
+
+    });
+
+    $app->group(['prefix' => 'category'], function($app){
+
+        $app->get('', 'CategoryController@index');
+        $app->post('', 'CategoryController@store');
+        $app->get('{id}', 'CategoryController@show');
+        $app->put('{id}', 'CategoryController@update');
+        $app->delete('{id}', 'CategoryController@delete');
+
+    });
 });

@@ -37,6 +37,10 @@ $app->configure('jwt');
 $app->configure('auth');
 $app->configure('modules');
 
+$app->middleware([
+    \App\Http\Middleware\CorsMiddleware::class,
+]);
+
  $app->routeMiddleware([
      'jwt-auth' => Tymon\JWTAuth\Http\Middleware\Authenticate::class,
      'cors' => \Barryvdh\Cors\HandleCors::class,
