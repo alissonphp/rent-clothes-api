@@ -36,6 +36,17 @@ class ClientController extends Controller
         }
     }
 
+    public function cep($cep)
+    {
+        try {
+            $consult = file_get_contents('https://viacep.com.br/ws/'.$cep.'/json/');
+            return response($consult, 200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
     public function delete($id)
     {
         try {
