@@ -52,7 +52,28 @@ class ItemController extends Controller
         }
 
     }
-    public function update() {}
+    public function update(Request $request, $id)
+    {
+        try {
+
+            $item = $this->model->find($id);
+            $item->label = $request->input('label');
+            $item->price = $request->input('price');
+            $item->short_description = $request->input('short_description');
+            $item->description = $request->input('description');
+            $item->active = $request->input('active');
+            $item->price_unit = $request->input('price_unit');
+            $item->categorys_id = $request->input('categorys_id');
+            $item->save();
+
+            $get = $this->model->where('id', $id)->with('category','sizes')->first();
+
+            return response($get,200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
 
     public function imageUpload(Request $request, $id)
     {
