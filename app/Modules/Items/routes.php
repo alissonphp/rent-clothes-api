@@ -22,4 +22,11 @@ $app->group(['middleware' => 'jwt-auth'], function($app)
         $app->delete('{id}', 'CategoryController@delete');
 
     });
+
+    $app->group(['prefix' => 'size'], function ($app){
+       $app->post('', 'ItemSizeController@store');
+       $app->get('{id}', 'ItemSizeController@show');
+       $app->put('{id}', 'ItemSizeController@update');
+       $app->delete('{id}', 'ItemSizeController@delete');
+    });
 });

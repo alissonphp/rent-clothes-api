@@ -44,7 +44,8 @@ class ItemController extends Controller
     {
 
         try {
-            return response($this->model->find($id)->with('category')->get(),200);
+            $item = $this->model->where('id', $id)->with('category','sizes')->first();
+            return response($item,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(), 500);
         }
