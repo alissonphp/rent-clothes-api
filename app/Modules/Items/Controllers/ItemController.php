@@ -4,6 +4,7 @@ namespace App\Modules\Items\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Items\Models\Item;
+use App\Modules\Items\Models\ItemImage;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -57,8 +58,14 @@ class ItemController extends Controller
     {
         try {
             $file = $request->file('file');
-            $fileName = 'item-'.$id.'-'.date('dmYHis').'.'.$file->getClientOriginalExtension();
+            $fileName = 'item-'.$id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
             move_uploaded_file($file, storage_path('app/public/images').'/'. $fileName);
+
+            ItemImage::create([
+                'items_id' => $id,
+                'file' => $fileName
+            ]);
+
             return response($file,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);

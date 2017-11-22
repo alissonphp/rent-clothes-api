@@ -8,6 +8,8 @@ class ItemImage extends Model
 {
 
     protected $table = 'item_images';
+    protected $fillable = ['items_id','file'];
+    public $timestamps = false;
 
     public function item()
     {
