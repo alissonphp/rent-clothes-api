@@ -2,6 +2,7 @@
 
 namespace App\Modules\Items\Models;
 
+use App\Modules\Orders\Models\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
@@ -23,6 +24,11 @@ class Item extends Model
     public function images()
     {
         return $this->hasMany(ItemImage::class,'items_id');
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class,'items_id');
     }
 
 

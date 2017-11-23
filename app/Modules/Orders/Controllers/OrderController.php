@@ -40,7 +40,7 @@ class OrderController extends Controller
     {
         try {
 
-            $item = $this->model->find($id);
+            $item = $this->model->find($id)->with('client','orderItems')->first();
             return response($item, 200);
 
         } catch (\Exception $ex) {

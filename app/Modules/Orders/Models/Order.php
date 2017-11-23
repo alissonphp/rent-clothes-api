@@ -15,4 +15,9 @@ class Order extends Model
     {
         return $this->belongsTo(Client::class, 'clients_id');
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class,'orders_id')->with('itemsize');
+    }
 }
