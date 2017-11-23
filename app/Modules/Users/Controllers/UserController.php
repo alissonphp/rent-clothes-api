@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Users\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -21,13 +22,90 @@ class UserController extends Controller
      */
     protected $jwt;
 
+    protected $model;
+
     /**
      * LoginController constructor.
      * @param JWTAuth $jwt
      */
-    public function __construct(JWTAuth $jwt)
+    public function __construct(JWTAuth $jwt, User $model)
     {
         $this->jwt = $jwt;
+        $this->model = $model;
+    }
+
+    public function index()
+    {
+        try {
+            $users = $this->model->whereHas('roles', function ($q) {
+                $q->where('roles_id', '!=', 3);
+            })->with('roles')->get();
+
+            return response($users, 200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(), 500);
+        }
+    }
+
+
+    public function store(Request $request)
+    {
+        try {
+            $usr = $this->model->create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+            ]);
+
+            $usr->roles()->attach($request->input('role'));
+
+            return response($usr, 200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(), 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            if(Auth::user()->id == $id) {
+                return response(['error' => 'Você não pode excluir a si mesmo!'], 500);
+            }
+            $this->model->find($id)->delete();
+            return response(['message' => 'success'], 200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(), 500);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $user = $this->model->where('id',$id)->with('roles')->first();
+            return response($user, 200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(), 500);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $user = $this->model->find($id);
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            if($request->has('password')) {
+                $user->password = bcrypt($request->input('password'));
+            }
+            $user->roles()->detach();
+            $user->roles()->attach($request->input('role'));
+            $user->save();
+            return response($user, 200);
+        } catch (\Exception $ex) {
+            return response(['error' => $ex->getMessage()], 500);
+        }
     }
 
     /**
