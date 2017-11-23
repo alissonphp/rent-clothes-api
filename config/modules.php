@@ -9,6 +9,7 @@ return [
         'OAuth',
         'Users',
         'Items',
-        'Clients'
+        'Clients',
+        'Orders'
     ]
 ];

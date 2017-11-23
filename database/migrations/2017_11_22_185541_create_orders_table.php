@@ -22,11 +22,11 @@ class CreateOrdersTable extends Migration
             $table->enum('status',['Finalizado','Aguardando Confirmação','Alugado','Cancelado','Estraviado','Finalizado com Atraso']);
             $table->date('output');
             $table->date('expected_return');
-            $table->date('returned');
+            $table->date('returned')->nullable();
             $table->decimal('subtotal');
-            $table->decimal('discount');
-            $table->decimal('interest');
-            $table->decimal('fines');
+            $table->decimal('discount')->nullable();
+            $table->decimal('interest')->nullable();
+            $table->decimal('fines')->nullable();
             $table->decimal('total');
             $table->timestamps();
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Modules\Clients\Controllers;
+namespace App\Modules\Orders\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Clients\Models\Client;
+use App\Modules\Orders\Models\Order;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class OrderController extends Controller
 {
 
     protected $model;
 
-    public function __construct(Client $model)
+    public function __construct(Order $model)
     {
         $this->model = $model;
     }
@@ -19,7 +19,7 @@ class ClientController extends Controller
     public function index()
     {
         try {
-            $all = $this->model->all();
+            $all = $this->model->with('client')->get();
             return response($all,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
@@ -29,12 +29,8 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         try {
-            $vrf = $this->model->where('cpf', $request->input('cpf'))->count();
-            if($vrf > 0) {
-                return response(['error' => 'CPF já cadastrado!'],500);
-            }
-            $client = $this->model->create($request->all());
-            return response($client,200);
+            $order = $this->model->create($request->all());
+            return response($order,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
         }
@@ -56,28 +52,9 @@ class ClientController extends Controller
     {
         try {
             $item = $this->model->find($id);
-
-            if($request->input('cpf') != $item->cpf) {
-                $vrf = $this->model->where('cpf', $request->input('cpf'))->count();
-                if($vrf > 0) {
-                    return response(['error' => 'CPF já cadastrado!'],500);
-                }
-            }
-
             $item->update($request->all());
 
             return response($item, 200);
-
-        } catch (\Exception $ex) {
-            return response($ex->getMessage(),500);
-        }
-    }
-
-    public function cep($cep)
-    {
-        try {
-            $consult = file_get_contents('https://viacep.com.br/ws/'.$cep.'/json/');
-            return response($consult, 200);
 
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
