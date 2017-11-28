@@ -80,7 +80,7 @@ class ItemController extends Controller
         try {
             $file = $request->file('file');
             $fileName = 'item-'.$id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
-            move_uploaded_file($file, storage_path('app/public/images').'/'. $fileName);
+            move_uploaded_file($file, 'drive/products/'. $fileName);
 
             ItemImage::create([
                 'items_id' => $id,

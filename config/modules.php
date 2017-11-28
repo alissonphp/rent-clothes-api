@@ -10,6 +10,7 @@ return [
         'Users',
         'Items',
         'Clients',
-        'Orders'
+        'Orders',
+        'Banners'
     ]
 ];
