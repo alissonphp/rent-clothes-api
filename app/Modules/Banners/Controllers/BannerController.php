@@ -31,6 +31,24 @@ class BannerController extends Controller
         }
 
     }
+
+    public function actives()
+    {
+
+        try {
+
+            $items = $this->model->where('active',1)->get();
+            return response($items,200);
+
+        } catch (\Exception $ex) {
+
+            return response($ex->getMessage(), 500);
+
+        }
+
+    }
+
+
     public function store(Request $request)
     {
         try {

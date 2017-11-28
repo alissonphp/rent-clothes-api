@@ -45,7 +45,7 @@ class ItemController extends Controller
     {
 
         try {
-            $item = $this->model->where('id', $id)->with('category','sizes')->first();
+            $item = $this->model->where('id', $id)->with('category','sizes', 'images')->first();
             return response($item,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(), 500);
@@ -66,7 +66,7 @@ class ItemController extends Controller
             $item->categorys_id = $request->input('categorys_id');
             $item->save();
 
-            $get = $this->model->where('id', $id)->with('category','sizes')->first();
+            $get = $this->model->where('id', $id)->with('category','sizes', 'images')->first();
 
             return response($get,200);
 
@@ -88,6 +88,18 @@ class ItemController extends Controller
             ]);
 
             return response($file,200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+    public function imageDelete($id)
+    {
+        try {
+
+            ItemImage::find($id)->delete();
+            return response('image deleted',200);
+
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
         }

@@ -1,5 +1,5 @@
 <?php
-
+$app->get('actives', 'BannerController@actives');
 $app->group(['middleware' => 'jwt-auth'], function($app)
 {
     $app->get('', 'BannerController@index');
