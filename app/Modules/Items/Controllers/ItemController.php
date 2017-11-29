@@ -32,6 +32,23 @@ class ItemController extends Controller
         }
 
     }
+
+    public function news()
+    {
+
+        try {
+
+            $items = $this->model->with('category','images')->limit(6)->get();
+            return response($items,200);
+
+        } catch (\Exception $ex) {
+
+            return response($ex->getMessage(), 500);
+
+        }
+
+    }
+
     public function store(Request $request)
     {
         try {

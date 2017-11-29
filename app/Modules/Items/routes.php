@@ -2,6 +2,7 @@
 
 $app->get('category', 'CategoryController@index');
 $app->get('item', 'ItemController@index');
+$app->get('news', 'ItemController@news');
 
 $app->group(['middleware' => 'jwt-auth'], function($app)
 {

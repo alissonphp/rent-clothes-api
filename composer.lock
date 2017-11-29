@@ -4,8 +4,63 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "31e115ebd1615479e2a27ea38670778a",
+    "content-hash": "604bd329c8c26f74c6e94370dcff99df",
     "packages": [
+        {
+            "name": "artistas/laravel-pagseguro",
+            "version": "1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/artistas/laravel-pagseguro.git",
+                "reference": "6f3b15556c46f89fd8fde6bda1cf6442c4618573"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/artistas/laravel-pagseguro/zipball/6f3b15556c46f89fd8fde6bda1cf6442c4618573",
+                "reference": "6f3b15556c46f89fd8fde6bda1cf6442c4618573",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.1.x|5.2.x|5.3.x|5.4.x|5.5.x",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Artistas\\PagSeguro\\PagSeguroServiceProvider"
+                    ],
+                    "aliases": {
+                        "PagSeguro": "Artistas\\PagSeguro\\PagSeguroFacade",
+                        "PagSeguroRecorrente": "Artistas\\PagSeguro\\PagSeguroRecorrenteFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Artistas\\PagSeguro\\": "src/Artistas/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fernando Henrique Bandeira",
+                    "email": "fernando.bandeira94@gmail.com"
+                }
+            ],
+            "description": "PagSeguro Checkout Transparente e Pagamento Recorrente(Assinaturas) no Laravel 5.*",
+            "keywords": [
+                "Pagseguro",
+                "assinaturas",
+                "laravel",
+                "recorrente",
+                "transparente"
+            ],
+            "time": "2017-11-28T14:21:46+00:00"
+        },
         {
             "name": "barryvdh/laravel-cors",
             "version": "v0.10.0",
