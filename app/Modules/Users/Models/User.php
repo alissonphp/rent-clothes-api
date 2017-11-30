@@ -2,6 +2,8 @@
 
 namespace App\Modules\Users\Models;
 
+use App\Modules\Clients\Models\Cashier;
+use App\Modules\Orders\Models\OrderStatusLog;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -53,5 +55,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles','users_id','roles_id');
+    }
+
+    public function cashier()
+    {
+        return $this->hasMany(Cashier::class, 'users_id');
+    }
+
+    public function logStatus()
+    {
+        return $this->hasMany(OrderStatusLog::class, 'orders_id');
     }
 }
