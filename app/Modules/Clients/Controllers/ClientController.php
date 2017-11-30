@@ -26,6 +26,20 @@ class ClientController extends Controller
         }
     }
 
+    public function search($term)
+    {
+        try {
+            $cls = $this->model
+                ->where('name','like','%'.$term.'%')
+                ->orWhere('cpf','like','%'.$term.'%')
+                ->orderBy('name','asc')
+                ->get();
+            return response($cls,200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
     public function store(Request $request)
     {
         try {

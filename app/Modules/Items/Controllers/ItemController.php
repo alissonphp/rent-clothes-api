@@ -19,18 +19,26 @@ class ItemController extends Controller
 
     public function index()
     {
-
         try {
-
             $items = $this->model->with('category')->get();
             return response($items,200);
-
         } catch (\Exception $ex) {
-
             return response($ex->getMessage(), 500);
-
         }
+    }
 
+    public function search($term)
+    {
+        try {
+            $items = $this->model
+                ->join('item_sizes','items.id','=','item_sizes.items_id')
+                ->where('items.label','like','%'.$term.'%')
+                ->orWhere('item_sizes.code','like','%'.$term.'%')
+                ->get();
+            return response($items,200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(), 500);
+        }
     }
 
     public function news()
