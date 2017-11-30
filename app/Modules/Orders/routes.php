@@ -7,4 +7,6 @@ $app->group(['middleware' => 'jwt-auth'], function($app) {
     $app->get('{id}', 'OrderController@show');
     $app->put('{id}', 'OrderController@update');
     $app->delete('{id}', 'OrderController@delete');
+
+    $app->get('status/{id}/{status}', 'OrderController@status');
 });
