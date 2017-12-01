@@ -33,7 +33,32 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         try {
-            $order = $this->model->create($request->all());
+
+            $data = [
+                'code' => date('Ymd') . rand(9,9999),
+                'clients_id' => $request->input('clients_id'),
+                'status' => 'Aguardando Confirmação',
+                'output' => $request->input('output'),
+                'expected_return' => $request->input('expected_return'),
+                'subtotal' => $request->input('subtotal'),
+                'discount' => $request->input('discount'),
+                'payment_method' => $request->input('payment_method'),
+                'total' => $request->input('total'),
+                'obs' => $request->input('obs'),
+                'users_id' => Auth::user()->id
+            ];
+
+            $order = $this->model->create($data);
+
+            foreach ($request->input('itens') as $item) {
+                $order->orderItems()->create([
+                   'orders_id' => $order->id,
+                   'days' => $item['days'],
+                   'subtotal' => $item['subtotal'],
+                   'item_sizes_id' => $item['id'],
+                ]);
+            }
+
             return response($order,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
@@ -59,7 +84,7 @@ class OrderController extends Controller
     {
         try {
 
-            $item = $this->model->find($id)->with('client','orderItems')->first();
+            $item = $this->model->where('id', $id)->with('orderItems', 'client')->first();
             return response($item, 200);
 
         } catch (\Exception $ex) {

@@ -11,7 +11,8 @@ class OrderItem extends Model
 {
 
     protected $table = 'order_items';
-    protected $fillable = ['orders_id','items_id','days','subtotal'];
+    protected $fillable = ['orders_id','item_sizes_id','days','subtotal'];
+    public $timestamps = false;
 
     public function order()
     {
