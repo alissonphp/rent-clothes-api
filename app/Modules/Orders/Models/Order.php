@@ -37,4 +37,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class,'users_id');
     }
+
+    public function pays()
+    {
+        return $this->hasMany(OrderPayment::class, 'orders_id');
+    }
 }

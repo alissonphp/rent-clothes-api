@@ -4,6 +4,7 @@ namespace App\Modules\Users\Models;
 
 use App\Modules\Clients\Models\Cashier;
 use App\Modules\Orders\Models\Order;
+use App\Modules\Orders\Models\OrderPayment;
 use App\Modules\Orders\Models\OrderStatusLog;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
@@ -70,5 +71,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function orders()
     {
         return $this->hasMany(Order::class,'users_id');
+    }
+
+    public function pays()
+    {
+        return $this->hasMany(OrderPayment::class, 'users_id');
     }
 }

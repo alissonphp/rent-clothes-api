@@ -4,6 +4,7 @@ namespace App\Modules\Orders\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Orders\Models\Order;
+use App\Modules\Orders\Models\OrderPayment;
 use App\Modules\Orders\Support\OrderManager;
 use App\Modules\Users\Models\Role;
 use App\Modules\Users\Models\User;
@@ -25,7 +26,7 @@ class OrderController extends Controller
     public function index()
     {
         try {
-            $all = $this->model->with('client','user')->get();
+            $all = $this->model->with('client','user','pays')->get();
             return response($all,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
@@ -93,13 +94,31 @@ class OrderController extends Controller
     public function pay(Request $request)
     {
 
+        try {
+
+            if($request->input('total_pay') > ($request->input('total') - $request->input('paid'))) {
+                return response(['error' => 'O valor informado excede o total da OL!'],500);
+            }
+
+            $pay = OrderPayment::create([
+                'orders_id' => $request->input('id'),
+                'value' => $request->input('total_pay'),
+                'users_id' => Auth::user()->id
+            ]);
+
+            return response($pay,200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+
     }
 
     public function show($id)
     {
         try {
 
-            $item = $this->model->where('id', $id)->with('orderItems', 'client','user')->first();
+            $item = $this->model->where('id', $id)->with('orderItems', 'client','user','pays')->first();
             return response($item, 200);
 
         } catch (\Exception $ex) {
