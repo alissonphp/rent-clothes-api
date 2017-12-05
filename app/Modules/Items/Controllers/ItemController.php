@@ -46,7 +46,7 @@ class ItemController extends Controller
 
         try {
 
-            $items = $this->model->with('category','images')->limit(6)->get();
+            $items = $this->model->with('category','images')->limit(8)->get();
             return response($items,200);
 
         } catch (\Exception $ex) {
