@@ -5,6 +5,8 @@ namespace App\Modules\Orders\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Orders\Models\Order;
 use App\Modules\Orders\Support\OrderManager;
+use App\Modules\Users\Models\Role;
+use App\Modules\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,8 +25,21 @@ class OrderController extends Controller
     public function index()
     {
         try {
-            $all = $this->model->with('client')->get();
+            $all = $this->model->with('client','user')->get();
             return response($all,200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+    public function sellers()
+    {
+        try {
+            $users = User::whereHas('roles', function ($q) {
+                $q->where('roles_id', '=', 4);
+            })->with('roles')->get();
+            return response($users,200);
+
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
         }
@@ -45,7 +60,7 @@ class OrderController extends Controller
                 'payment_method' => $request->input('payment_method'),
                 'total' => $request->input('total'),
                 'obs' => $request->input('obs'),
-                'users_id' => Auth::user()->id
+                'users_id' => $request->input('users_id'),
             ];
 
             $order = $this->model->create($data);
@@ -84,7 +99,7 @@ class OrderController extends Controller
     {
         try {
 
-            $item = $this->model->where('id', $id)->with('orderItems', 'client')->first();
+            $item = $this->model->where('id', $id)->with('orderItems', 'client','user')->first();
             return response($item, 200);
 
         } catch (\Exception $ex) {

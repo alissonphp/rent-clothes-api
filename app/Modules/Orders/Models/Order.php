@@ -4,6 +4,7 @@ namespace App\Modules\Orders\Models;
 
 use App\Modules\Clients\Models\Cashier;
 use App\Modules\Clients\Models\Client;
+use App\Modules\Users\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -30,5 +31,10 @@ class Order extends Model
     public function logStatus()
     {
         return $this->hasMany(OrderStatusLog::class, 'orders_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'users_id');
     }
 }
