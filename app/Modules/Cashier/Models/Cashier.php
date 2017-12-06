@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Clients\Models;
+namespace App\Modules\Cashier\Models;
 
 use App\Modules\Orders\Models\Order;
 use App\Modules\Users\Models\User;

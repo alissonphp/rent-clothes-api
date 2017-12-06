@@ -11,5 +11,6 @@ $app->group(['middleware' => 'jwt-auth'], function($app) {
     $app->delete('{id}', 'OrderController@delete');
 
     $app->get('status/{id}/{status}', 'OrderController@status');
+    $app->get('items-situation/{id}/{situation}', 'OrderController@itemSituation');
     $app->post('payment', 'OrderController@pay');
 });

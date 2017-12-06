@@ -53,7 +53,7 @@ class OrderController extends Controller
             $data = [
                 'code' => date('Ymd') . rand(9,9999),
                 'clients_id' => $request->input('clients_id'),
-                'status' => 'Aguardando Confirmação',
+                'status' => 'Aberta',
                 'output' => $request->input('output'),
                 'expected_return' => $request->input('expected_return'),
                 'subtotal' => $request->input('subtotal'),
@@ -91,10 +91,25 @@ class OrderController extends Controller
         }
     }
 
+    public function itemSituation($id, $situation)
+    {
+        try {
+            $order = $this->model->find($id);
+            $order->items_situation = $situation;
+            $order->save();
+            return response(['status' => $order->items_situation],200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+
     public function pay(Request $request)
     {
 
         try {
+
+            $order = $this->model->find($request->input('id'));
 
             if($request->input('total_pay') > ($request->input('total') - $request->input('paid'))) {
                 return response(['error' => 'O valor informado excede o total da OL!'],500);
@@ -105,6 +120,18 @@ class OrderController extends Controller
                 'value' => $request->input('total_pay'),
                 'users_id' => Auth::user()->id
             ]);
+
+            if(($request->input('total_pay') + $request->input('paid')) == $order->total) {
+                $this->manager->setOrder($order->id)
+                    ->setUser(Auth::user())
+                    ->setStatus('Paga (total)')
+                    ->registerCash($request->input('total_pay'));
+            } else {
+                $this->manager->setOrder($order->id)
+                    ->setUser(Auth::user())
+                    ->setStatus('Paga (parcial)')
+                    ->registerCash($request->input('total_pay'));
+            }
 
             return response($pay,200);
 

@@ -11,7 +11,7 @@ class Order extends Model
 {
 
     protected $table = 'orders';
-    protected $fillable = ['clients_id','code','status','output','expected_return','returned','subtotal','discount','interest','fines','total','obs'];
+    protected $fillable = ['clients_id','code','status','output','expected_return','returned','subtotal','discount','interest','fines','total','obs','users_id'];
 
     public function client()
     {
@@ -41,5 +41,20 @@ class Order extends Model
     public function pays()
     {
         return $this->hasMany(OrderPayment::class, 'orders_id');
+    }
+
+    public function getItemsSituationAttribute($value)
+    {
+        switch ($value) {
+            case 1:
+                return "Aguardando";
+                break;
+            case 2:
+                return "Em locação";
+                break;
+            case 3:
+                return "Devolvidos";
+                break;
+        }
     }
 }

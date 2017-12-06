@@ -19,7 +19,14 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('clients_id')->unsigned();
             $table->string('code');
-            $table->enum('status',['Finalizado','Aguardando Confirmação','Alugado','Cancelado','Estraviado','Finalizado com Atraso']);
+            $table->enum('status',[
+                'Aberta',
+                'Paga (total)',
+                'Paga (parcial)',
+                'Cancelada',
+                'Finalizada'
+            ]);
+            $table->enum('items_situation',[1,2,3]);
             $table->date('output');
             $table->date('expected_return');
             $table->date('returned')->nullable();

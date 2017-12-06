@@ -2,6 +2,7 @@
 
 namespace App\Modules\Orders\Support;
 
+use App\Modules\Cashier\Models\Cashier;
 use App\Modules\Orders\Models\Order;
 use App\Modules\Orders\Models\OrderStatusLog;
 use App\Modules\Users\Models\User;
@@ -51,9 +52,18 @@ class OrderManager
         }
     }
 
-    public function registerCash()
+    public function registerCash($total)
     {
-
+        try {
+            Cashier::create([
+                'users_id' => $this->user->id,
+                'orders_id' => $this->order->id,
+                'total' => $total
+            ]);
+            return $this;
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
     }
 
 }
