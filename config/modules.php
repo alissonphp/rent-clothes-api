@@ -11,6 +11,7 @@ return [
         'Items',
         'Clients',
         'Orders',
+        'Cashier',
         'Banners'
     ]
 ];
