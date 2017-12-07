@@ -3,6 +3,7 @@
 namespace App\Modules\Users\Models;
 
 use App\Modules\Clients\Models\Cashier;
+use App\Modules\Goals\Models\Goals;
 use App\Modules\Orders\Models\Order;
 use App\Modules\Orders\Models\OrderPayment;
 use App\Modules\Orders\Models\OrderStatusLog;
@@ -76,5 +77,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function pays()
     {
         return $this->hasMany(OrderPayment::class, 'users_id');
+    }
+
+    public function goals()
+    {
+        return $this->hasMany(Goals::class, 'users_id');
     }
 }
