@@ -43,9 +43,11 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         try {
-            $vrf = $this->model->where('cpf', $request->input('cpf'))->count();
+            $vrf = $this->model->where('cpf', $request->input('cpf'))
+                ->orWhere('email',$request->input('email'))
+                ->count();
             if($vrf > 0) {
-                return response(['error' => 'CPF já cadastrado!'],500);
+                return response(['error' => 'CPF ou E-mail já cadastrado!'],500);
             }
             $client = $this->model->create($request->all());
             return response($client,200);

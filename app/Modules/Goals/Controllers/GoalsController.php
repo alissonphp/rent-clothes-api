@@ -58,7 +58,7 @@ class GoalsController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $goal = $this->model->find($id)->update(
+            $this->model->find($id)->update(
                 [
                     'month' => $request->input('month'),
                     'year' => $request->input('year'),
