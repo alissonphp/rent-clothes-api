@@ -37,8 +37,17 @@ class CategoryController extends Controller
             return response($ex->getMessage(),500);
         }
     }
-    public function show() {}
-    public function update() {}
+    public function update(Request $request, $id) {
+        try {
+            $this->model->find($id)->update([
+                'label' => $request->input('newlabel')
+            ]);
+
+            return response(['message' => 'success'], 200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
     public function delete($id)
     {
         try {

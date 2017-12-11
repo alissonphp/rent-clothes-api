@@ -33,6 +33,18 @@ class ItemSizeController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+
+        try {
+            $this->model->find($id)->update($request->all());
+            return response(['message' => 'success'],200);
+        } catch (\Exception $ex) {
+            response($ex->getMessage(),500);
+        }
+
+    }
+
     public function delete($id)
     {
         try {

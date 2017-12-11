@@ -21,7 +21,6 @@ $app->group(['middleware' => 'jwt-auth'], function($app)
     $app->group(['prefix' => 'category'], function($app){
 
         $app->post('', 'CategoryController@store');
-        $app->get('{id}', 'CategoryController@show');
         $app->put('{id}', 'CategoryController@update');
         $app->delete('{id}', 'CategoryController@delete');
 
