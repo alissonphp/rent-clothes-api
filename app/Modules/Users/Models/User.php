@@ -83,4 +83,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Goals::class, 'users_id');
     }
+
+    public function remembers()
+    {
+        return $this->hasMany(RememberToken::class, 'users_id');
+    }
 }

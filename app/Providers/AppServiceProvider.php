@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Jenssegers\Mongodb\MongodbServiceProvider;
 use Laravel\Socialite\SocialiteServiceProvider;
 use Tymon\JWTAuth\Providers\LumenServiceProvider;
 
@@ -23,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(CommandsServiceProvider::class);
         $this->app->register(\Barryvdh\Cors\ServiceProvider::class);
+        $this->app->register(\Illuminate\Mail\MailServiceProvider::class);
     }
 }

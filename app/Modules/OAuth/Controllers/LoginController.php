@@ -4,8 +4,11 @@ namespace App\Modules\OAuth\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Users\Controllers\UserController;
+use App\Modules\Users\Models\RememberToken;
 use App\Modules\Users\Models\User;
 use App\Modules\Users\Supports\MailCheckSupport;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite as Socialite;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
@@ -139,5 +142,75 @@ class LoginController extends Controller
 
         return response()->json(compact('token','user'));
     }
+
+    public function remember(Request $request)
+    {
+        try {
+            $user = User::where('email', $request->input('email'))->first();
+            if(!$user) {
+                return response(['error' => 'Usuário não encontrado'],404);
+            }
+
+            $now = Carbon::now();
+            $token = RememberToken::create([
+               'users_id' => $user->id,
+                'token' => md5(random_bytes(10)),
+                'expired_at' => $now->addHour()
+
+            ]);
+            $url = env('APP_URL');
+
+            Mail::send('mail.remember', ['token' => $token, 'user' => $user, 'url' => $url], function ($m) use ($user) {
+                $m->to($user->email, $user->name)->subject('Damiipratii - Redefinição de Senha');
+            });
+
+            return response(['message' => 'success'],200);
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+    public function checkToken(Request $request)
+    {
+        try {
+
+            $now = Carbon::now();
+            $token = RememberToken::where('token', $request->input('token'))->first();
+            if(!$token) {
+                return response(['error' => 'Token inválido'],404);
+            }
+
+            if($token->expired_at < $now) {
+                return response(['error' => 'Token expirado! Validade do token é de 1 hora.'],401);
+            }
+
+            $user = $token->user;
+
+            return response($user, 200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+
+            $user = User::find($request->input('id'));
+            if(!$user) {
+                return response(['error' => 'Usuário não encontrado'],404);
+            }
+
+            $user->password = bcrypt($request->input('pass1'));
+            $user->save();
+            return response(['message' => 'success']);
+
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
 
 }

@@ -36,6 +36,7 @@ $app->configure('cors');
 $app->configure('jwt');
 $app->configure('auth');
 $app->configure('modules');
+$app->configure('mail');
 
 $app->middleware([
     \App\Http\Middleware\CorsMiddleware::class,
