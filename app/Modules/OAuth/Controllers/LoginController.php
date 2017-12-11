@@ -158,6 +158,7 @@ class LoginController extends Controller
                 'expired_at' => $now->addHour()
 
             ]);
+
             $url = env('APP_URL');
 
             Mail::send('mail.remember', ['token' => $token, 'user' => $user, 'url' => $url], function ($m) use ($user) {

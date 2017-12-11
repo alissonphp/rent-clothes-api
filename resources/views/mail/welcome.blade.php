@@ -98,27 +98,29 @@
                                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
-                                        Olá {{ $user->name }}, você solicitou a redefinição da sua senha de acesso ao site Damiipratii.
+                                        Olá {{ $user->name }}, seja bem-vindo(a) ao site Damiipratii.
                                     </td>
                                 </tr>
                                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
-                                        Clique no link abaixo e continue com a redefinição:
+                                        Seguem suas credenciais de acesso: <br>
+                                        Login: {{ $user->email }}<br>
+                                        Senha: {{ $pass }}
                                     </td>
                                 </tr>
                                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler"
                                         style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; text-align: center; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
-                                        <a href="{{ $url }}/remember/token/{{ $token->token }}" class="btn-primary" itemprop="url" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #dd7941; margin: 0; border-color: #dd7941; border-style: solid; border-width: 10px 20px;">Redefinir Senha</a>
+                                        <a href="{{ $url }}/login" class="btn-primary" itemprop="url" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #dd7941; margin: 0; border-color: #dd7941; border-style: solid; border-width: 10px 20px;">Fazer Login</a>
                                     </td>
                                 </tr>
                                 <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
                                         <p style="font-size: 12px;">Caso não esteja conseguindo clicar no link, copie e cole o endereço a seguir no seu navegador:
-                                        {{ $url }}/remember/token/{{ $token->token }}</p>
+                                        {{ $url }}/login</p>
                                         Att,<br>
                                         &mdash; Damiipratii
                                     </td>

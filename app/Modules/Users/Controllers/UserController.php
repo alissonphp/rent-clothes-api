@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\JWTAuth;
 
 /**
@@ -59,6 +60,12 @@ class UserController extends Controller
             ]);
 
             $usr->roles()->attach($request->input('role'));
+
+            $url = env('APP_URL');
+
+            Mail::send('mail.welcome', ['pass' => $request->input('password'), 'user' => $usr, 'url' => $url], function ($m) use ($usr) {
+                $m->to($usr->email, $usr->name)->subject('Damiipratii - Boas Vindas');
+            });
 
             return response($usr, 200);
         } catch (\Exception $ex) {
