@@ -53,11 +53,22 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
+
             $usr = $this->model->create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
             ]);
+
+
+            if($request->has('file')) {
+
+                $file = $request->file('file');
+                $fileName = 'item-'.$usr->id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
+                move_uploaded_file($file, 'drive/avatars/'. $fileName);
+                $usr->avatar = $fileName;
+                $usr->save();
+            }
 
             $usr->roles()->attach($request->input('role'));
 
@@ -106,8 +117,19 @@ class UserController extends Controller
             if($request->has('password')) {
                 $user->password = bcrypt($request->input('password'));
             }
+
             $user->roles()->detach();
             $user->roles()->attach($request->input('role'));
+
+            if($request->has('file')) {
+
+                $file = $request->file('file');
+                $fileName = 'item-'.$user->id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
+                move_uploaded_file($file, 'drive/avatars/'. $fileName);
+                $user->avatar = $fileName;
+                $user->save();
+            }
+
             $user->save();
             return response($user, 200);
         } catch (\Exception $ex) {
