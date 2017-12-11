@@ -6,6 +6,7 @@
 
 return [
     'modules' => [
+        'Dashboards',
         'OAuth',
         'Users',
         'Items',
