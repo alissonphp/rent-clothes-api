@@ -3,7 +3,10 @@
 namespace App\Modules\Users\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Cashier\Models\SellerCommission;
+use App\Modules\Goals\Support\GetCurrentGoals;
 use App\Modules\Users\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
@@ -24,14 +27,16 @@ class UserController extends Controller
     protected $jwt;
 
     protected $model;
+    public $goals;
 
     /**
      * LoginController constructor.
      * @param JWTAuth $jwt
      */
-    public function __construct(JWTAuth $jwt, User $model)
+    public function __construct(JWTAuth $jwt, User $model, GetCurrentGoals $goals)
     {
         $this->jwt = $jwt;
+        $this->goals = $goals;
         $this->model = $model;
     }
 
@@ -179,6 +184,23 @@ class UserController extends Controller
                 $q->where('roles_id', '=', $roleId);
             })->with('roles')->get();
             return response($users,200);
+
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+    public function currentGoals()
+    {
+        try {
+
+            return response([
+                'commissions' => $this->goals->getSellerCurrentCommissions(Auth::id()),
+                'goal_seller' => $this->goals->getGoalSeller(),
+                'goal_seller_now' => $this->goals->getGoalSellerNow(Auth::id())[0]->totalSellers,
+                'goal_store' => $this->goals->getGoalStore(),
+                'goal_store_now' => $this->goals->getGoalStoreNow()[0]->totalStore
+            ],200);
 
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);

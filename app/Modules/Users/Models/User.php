@@ -2,6 +2,7 @@
 
 namespace App\Modules\Users\Models;
 
+use App\Modules\Cashier\Models\SellerCommission;
 use App\Modules\Clients\Models\Cashier;
 use App\Modules\Goals\Models\Goals;
 use App\Modules\Orders\Models\Order;
@@ -87,5 +88,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function remembers()
     {
         return $this->hasMany(RememberToken::class, 'users_id');
+    }
+
+    public function commissions()
+    {
+        return $this->hasMany(SellerCommission::class, 'users_id');
     }
 }

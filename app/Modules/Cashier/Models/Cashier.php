@@ -22,4 +22,9 @@ class Cashier extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
+    public function commissions()
+    {
+        return $this->hasMany(SellerCommission::class,'cashiers_id');
+    }
+
 }

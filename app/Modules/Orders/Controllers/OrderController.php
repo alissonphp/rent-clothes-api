@@ -37,7 +37,7 @@ class OrderController extends Controller
     {
         try {
             $users = User::whereHas('roles', function ($q) {
-                $q->where('roles_id', '=', 4);
+                $q->where('roles_id', '=', 3);
             })->with('roles')->get();
             return response($users,200);
 
