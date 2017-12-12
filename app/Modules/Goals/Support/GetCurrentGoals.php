@@ -97,6 +97,9 @@ class GetCurrentGoals
     {
         return SellerCommission::where('users_id', $seller)
             ->whereBetween('created_at',[$this->start, $this->end])
+            ->with(['cashier' => function ($query) {
+                $query->with('order');
+            }])
             ->orderBy('created_at')
             ->get();
     }
