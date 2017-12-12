@@ -5,6 +5,7 @@ namespace App\Modules\Orders\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Orders\Models\Order;
 use App\Modules\Orders\Models\OrderPayment;
+use App\Modules\Orders\Support\OrderItemsManager;
 use App\Modules\Orders\Support\OrderManager;
 use App\Modules\Users\Models\Role;
 use App\Modules\Users\Models\User;
@@ -97,6 +98,13 @@ class OrderController extends Controller
             $order = $this->model->find($id);
             $order->items_situation = $situation;
             $order->save();
+
+            if($situation == 2) {
+                OrderItemsManager::out($id);
+            } else {
+                OrderItemsManager::in($id);
+            }
+
             return response(['status' => $order->items_situation],200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
