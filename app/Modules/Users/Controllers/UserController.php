@@ -66,15 +66,6 @@ class UserController extends Controller
             ]);
 
 
-            if($request->has('file')) {
-
-                $file = $request->file('file');
-                $fileName = 'item-'.$usr->id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
-                move_uploaded_file($file, 'drive/avatars/'. $fileName);
-                $usr->avatar = $fileName;
-                $usr->save();
-            }
-
             $usr->roles()->attach($request->input('role'));
 
             $url = env('APP_URL');
@@ -117,22 +108,20 @@ class UserController extends Controller
     {
         try {
             $user = $this->model->find($id);
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
+            if($request->has('name')) {
+                $user->name = $request->input('name');
+            }
+            if($request->has('email')) {
+                $user->email = $request->input('email');
+            }
             if($request->has('password')) {
                 $user->password = bcrypt($request->input('password'));
             }
 
-            $user->roles()->detach();
-            $user->roles()->attach($request->input('role'));
+            if($request->has('role')) {
 
-            if($request->has('file')) {
-
-                $file = $request->file('file');
-                $fileName = 'item-'.$user->id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
-                move_uploaded_file($file, 'drive/avatars/'. $fileName);
-                $user->avatar = $fileName;
-                $user->save();
+                $user->roles()->detach();
+                $user->roles()->attach($request->input('role'));
             }
 
             $user->save();
@@ -141,6 +130,25 @@ class UserController extends Controller
             return response(['error' => $ex->getMessage()], 500);
         }
     }
+
+    public function profileUpdate(Request $request)
+    {
+        try {
+            $user = $this->model->find(Auth::id());
+
+            $file = $request->file('file');
+            $fileName = 'item-'.$user->id.'-'.date('dmYHis').rand(1,999).'.'.$file->getClientOriginalExtension();
+            move_uploaded_file($file, 'drive/avatars/'. $fileName);
+            $user->avatar = $fileName;
+            $user->save();
+
+            $user->save();
+            return response($user, 200);
+        } catch (\Exception $ex) {
+            return response(['error' => $ex->getMessage()], 500);
+        }
+    }
+
 
     /**
      * @param array $infos
@@ -185,6 +193,15 @@ class UserController extends Controller
             })->with('roles')->get();
             return response($users,200);
 
+        } catch (\Exception $ex) {
+            return response($ex->getMessage(),500);
+        }
+    }
+
+    public function current()
+    {
+        try {
+            return response(Auth::user(),200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
         }

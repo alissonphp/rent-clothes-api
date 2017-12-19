@@ -138,7 +138,7 @@ class LoginController extends Controller
             return response()->json(['token_absent' => $e->getMessage()], $e->getStatusCode());
         }
 
-        $user = User::select('name','email','id')->where('email', $request->input('email'))->with('roles')->first();
+        $user = User::select('name','email','id','avatar')->where('email', $request->input('email'))->with('roles')->first();
 
         return response()->json(compact('token','user'));
     }

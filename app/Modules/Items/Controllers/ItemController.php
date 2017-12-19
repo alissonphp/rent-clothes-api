@@ -27,14 +27,20 @@ class ItemController extends Controller
         }
     }
 
-    public function search($term)
+    public function search(Request $request)
     {
         try {
+            if($request->has('s')) {
             $items = $this->model
                 ->join('item_sizes','items.id','=','item_sizes.items_id')
-                ->where('items.label','like','%'.$term.'%')
-                ->orWhere('item_sizes.code','like','%'.$term.'%')
+                ->where('items.label','like','%'.$request->input('s').'%')
+                ->orWhere('item_sizes.code','like','%'.$request->input('s').'%')
                 ->get();
+            } else {
+                $items = $this->model
+                    ->join('item_sizes','items.id','=','item_sizes.items_id')
+                    ->get();
+            }
             return response($items,200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(), 500);
