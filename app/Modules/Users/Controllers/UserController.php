@@ -33,10 +33,9 @@ class UserController extends Controller
      * LoginController constructor.
      * @param JWTAuth $jwt
      */
-    public function __construct(JWTAuth $jwt, User $model, GetCurrentGoals $goals)
+    public function __construct(JWTAuth $jwt, User $model)
     {
         $this->jwt = $jwt;
-        $this->goals = $goals;
         $this->model = $model;
     }
 
@@ -207,9 +206,11 @@ class UserController extends Controller
         }
     }
 
-    public function currentGoals()
+    public function currentGoals($month)
     {
         try {
+
+            $this->goals = new GetCurrentGoals($month);
 
             return response([
                 'commissions' => $this->goals->getSellerCurrentCommissions(Auth::id()),
@@ -220,7 +221,7 @@ class UserController extends Controller
             ],200);
 
         } catch (\Exception $ex) {
-            return response($ex->getMessage(),500);
+            return response($ex,500);
         }
     }
 

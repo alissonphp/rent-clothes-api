@@ -9,6 +9,6 @@ $app->group(['middleware' => 'jwt-auth'], function($app)
     $app->put('{id}', 'UserController@update');
     $app->delete('{id}', 'UserController@delete');
     $app->get('active', 'UserController@current');
-    $app->get('current/seller/goals', 'UserController@currentGoals');
+    $app->get('current/seller/goals/{month}', 'UserController@currentGoals');
     $app->post('profile/avatar/upload', 'UserController@profileUpdate');
 });

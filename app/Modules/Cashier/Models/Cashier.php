@@ -10,7 +10,7 @@ class Cashier extends Model
 {
 
     protected $table = 'cashier';
-    protected $fillable = ['id','users_id','orders_id','total'];
+    protected $fillable = ['id','users_id','orders_id','total','method'];
 
     public function order()
     {

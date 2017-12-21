@@ -30,15 +30,13 @@ class GetCurrentGoals
     /**
      * GetCurrentGoals constructor.
      */
-    public function __construct()
+    public function __construct($month)
     {
         try {
 
-            $this->start = new Carbon('first day of this month');
-            $this->end = new Carbon('last day of this month');
-
             $year = date('Y');
-            $month = date('m');
+            $this->start = Carbon::parse('01-'.$month.'-'.$year);
+            $this->end = Carbon::parse('01-'.$month.'-'.$year)->endOfMonth();
             $this->goal = Goals::where('year',$year)
                 ->where('month',$month)
                 ->first();

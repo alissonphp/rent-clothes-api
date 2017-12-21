@@ -29,7 +29,7 @@ class CashierController extends Controller
     public function filter(Request $request)
     {
         try {
-            $query = $this->model->orderBy('created_at','asc')->with(['order','user']);
+            $query = $this->model->orderBy('created_at','asc')->with(['order','user','order.user']);
             $query->whereBetween('created_at',[$request->input('start') . ' 00:00:00', $request->input('end') . ' 23:59:59']);
             if($request->has('user') && $request->input('user') != 'all') {
                 $query->where('users_id',$request->input('user'));

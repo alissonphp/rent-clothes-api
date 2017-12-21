@@ -54,13 +54,14 @@ class OrderManager extends GetCurrentGoals
         }
     }
 
-    public function registerCash($total)
+    public function registerCash($total,$method)
     {
         try {
             $cashier = Cashier::create([
                 'users_id' => $this->user->id,
                 'orders_id' => $this->order->id,
-                'total' => $total
+                'total' => $total,
+                'method' => $method
             ]);
             $this->registerSellerCommission($total,$cashier);
             return $this;

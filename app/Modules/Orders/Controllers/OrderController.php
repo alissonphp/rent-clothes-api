@@ -133,12 +133,12 @@ class OrderController extends Controller
                 $this->manager->setOrder($order->id)
                     ->setUser(Auth::user())
                     ->setStatus('Paga (total)')
-                    ->registerCash($request->input('total_pay'));
+                    ->registerCash($request->input('total_pay'), $request->input('method'));
             } else {
                 $this->manager->setOrder($order->id)
                     ->setUser(Auth::user())
                     ->setStatus('Paga (parcial)')
-                    ->registerCash($request->input('total_pay'));
+                    ->registerCash($request->input('total_pay'), $request->input('method'));
             }
 
             return response($pay,200);
