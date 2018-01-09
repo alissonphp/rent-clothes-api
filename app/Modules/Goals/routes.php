@@ -6,4 +6,5 @@ $app->group(['middleware' => 'jwt-auth'], function($app) {
     $app->post('', 'GoalsController@store');
     $app->put('{id}', 'GoalsController@update');
     $app->delete('{id}', 'GoalsController@delete');
+    $app->get('graphic', 'GoalsController@dashboardGraph');
 });

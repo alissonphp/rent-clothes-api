@@ -4,6 +4,7 @@ namespace App\Modules\Goals\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Goals\Models\Goals;
+use App\Modules\Goals\Support\GetCurrentGoals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +12,7 @@ class GoalsController extends Controller
 {
 
     protected $model;
+    public $goals;
 
     public function __construct(Goals $model)
     {
@@ -86,6 +88,31 @@ class GoalsController extends Controller
             ],200);
         } catch (\Exception $ex) {
             return response($ex->getMessage(),500);
+        }
+    }
+
+    public function getGoalsOfYear()
+    {
+        return Goals::where('year',date('Y'))->orderBy('month','asc')->get();
+    }
+
+    public function dashboardGraph()
+    {
+        try {
+            $res = [];
+            foreach ($this->getGoalsOfYear() as $g) {
+                $this->goals = new GetCurrentGoals($g->month);
+                $res[] = [
+                    'month' => $g->month,
+                    'goal_store' => $this->goals->getGoalStore(),
+                    'goal_store_now' => $this->goals->getGoalStoreNow()[0]->totalStore
+                ];
+            }
+
+            return response($res,200);
+
+        } catch (\Exception $ex) {
+            return response($ex,500);
         }
     }
 
